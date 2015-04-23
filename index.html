@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+<head>
+    <script src="d3/d3.js"></script>
+</head>
+
+<style>
+
+body {
+font-family: sans-serif;
+}    
+
+#inputarea {
+    display: inline-block;
+    width:100%;
+    height: 200px;       
+}    
+
+#h-inputarea {
+    color: steelblue;
+}    
+
+#submit {
+}
+    
+
+ul {
+    list-style-type: none;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    width:60%;
+}    
+    
+li {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    padding-top: 0.75em;
+    padding-bottom: 0.75em;
+}    
+
+li.records {
+    font-weight: bold;
+    background: #dbdcdd;
+    cursor: pointer;
+    padding-left: 10px;
+
+}    
+
+ul.itemlist {
+    width: 90%;
+    padding-left: 10px;
+    overflow: hidden;
+    max-height: 5000px;
+    -webkit-transition:max-height 0.2s ;
+	-ms-transition:max-height 0.2s ;
+	-moz-transition:max-height 0.2s ;
+	-o-transition:max-height 0.2s ;
+	transition:max-height 0.2s ;
+    list-style-type: none;
+}       
+    
+ul .itemlist.collapsed {
+    max-height: 0px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}    
+
+    
+    
+/*li.items:nth-child(even){
+background: steelblue;
+}     
+ 
+li.items:nth-child(odd){
+background: lightsteelblue;
+}
+    */
+    
+.waardediv {
+    overflow: hidden;
+}
+    
+li.items {
+    padding-top: 0.25em;
+    padding-bottom: 0.25em;
+    padding-left: 0.25em;
+    border: 1px solid black;
+}    
+
+input.item_input {
+    float: right;
+    margin-right: 20px;
+}    
+
+span.itemtitle {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    display: inline-block;
+}    
+    
+span.item_waarde {
+    display: inline-block;
+    width: 40%;
+    background: white;
+}  
+    
+img.picture {
+height: 0.75em;    
+margin-left: 100px;
+
+}
+
+div{
+padding: 5px;
+}
+    
+    
+div.wrapper {
+width: 75%;
+overflow: hidden;
+}    
+
+    
+    
+div.divider {
+width: 45%;
+float:left;
+}    
+    
+div.clear {
+clear: both;
+}
+
+textarea.new_input {
+float:right;
+}
+    
+    
+</style>
+<body>
+
+    
+<div>
+<h1>Declaratiebericht aanpassen</h1>    
+
+<h3 id = "h-inputarea">Origineel</h3>    
+<textarea id="inputarea" autofocus="autofocus" placeholder="plak text declaratiebericht hier" wrap="off"></textarea>
+
+</div>
+
+
+<div class="wrapper" >
+
+<div class="divider">
+   
+    <div class="wrapper">
+        <span>Nieuwe Startdatum</span>
+        <textarea name="startdatum" id="input_startdatum" cols="12" rows="1" class=new_input></textarea>
+    </div>
+    
+    <div class="wrapper">
+    <span>Nieuwe Einddatum</span>
+    <textarea name="einddatum" id="input_einddatum" cols="12" rows="1" class=new_input></textarea>
+    </div>
+    
+    <div class="wrapper">
+    <span>Nieuwe Prestatiecode</span>
+    <textarea name="prestatiecode" id="input_prestatiecode" cols="12" rows="1" class=new_input></textarea>   
+    </div>
+    
+    <div class="wrapper">
+    <span>Nieuwe Declaratiecode</span>
+    <textarea name="declaratiecode" id="input_declaratiecode" cols="12" rows="1" class=new_input></textarea>    
+    </div>
+
+    <div class="wrapper">
+    <span>Nieuwe totale tijd</span>
+    <textarea name="totale_tijd" id="input_totale_tijd" cols="12" rows="1" class=new_input></textarea>    
+    </div>
+      
+    <div class="wrapper">
+    <span>Nieuwe directe tijd</span>
+    <textarea name="directe_tijd" id="input_directe_tijd" cols="12" rows="1" class=new_input></textarea>   
+    </div>
+</div>   
+   
+<div class="divider">   
+   <div class="wrapper">
+    <span>Nieuwe indirecte tijd</span>
+    <textarea name="indirecte_tijd" id="input_indirecte_tijd" cols="12" rows="1" class=new_input></textarea>    
+    </div>
+    
+    
+    
+    <div class="wrapper">
+    <span>Nieuw verrekenpercentage</span>
+    <textarea name="verrekenpercentage" id="input_verrekenpercentage" cols="12" rows="1" class=new_input></textarea>    
+    </div>
+    
+    
+    <div class="wrapper">
+    <span>Nieuw NZA tarief</span>
+    <textarea name="NZA_tarief" id="input_NZA_tarief" cols="12" rows="1" class=new_input></textarea>    
+    </div>
+    
+    
+    
+    <div class="wrapper">
+    <span>Nieuw declaratiebedrag</span>
+    <textarea name="declaratiebedrag" id="input_declaratiebedrag" cols="12" rows="1" class=new_input></textarea>    
+    </div>
+    
+    <div class="wrapper">
+    <span>Nieuw berekend bedrag</span>
+    <textarea name="berekend_bedrag" id="input_berekend_bedrag" cols="12" rows="1" class=new_input></textarea>    
+    </div>
+</div>    
+    
+<div class="clear"> </div>    
+
+<div>
+    <input id= "submit" type="button" type="submit" value="Lees in">
+    <input id= "apply" type="button" type="submit" value="Toepassen">
+    <input id= "credit" type="button" type="submit" value="Crediteer">
+    <input id= "export" type="button" type="submit" value="Exporteer">
+    
+    <a download="bericht.txt" id="downloadlink" style="display: none">Download Declaratiebericht</a>      
+</div>
+
+
+</div>
+
+
+      
+<ul id="veldlijst" class="bericht_lijst"></ul>
+
+
+<script src="dec_lezen.js"></script>                
+</body>
+
+
