@@ -374,7 +374,7 @@ function huidige_waarde(targets) {
     
     console.log(selectie);
     
-    return selectie.html().trimRight(); 
+    return selectie.html().trim(); 
 }
 
 
