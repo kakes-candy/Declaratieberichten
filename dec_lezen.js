@@ -306,6 +306,7 @@ function bericht_downloaden(tekst_bericht) {
             }
 
             textFile = window.URL.createObjectURL(data);
+            
 
             return textFile;
         };
@@ -316,6 +317,7 @@ function bericht_downloaden(tekst_bericht) {
         link = document.getElementById('downloadlink');
         
     link.href = makeTextFile(tekst_bericht);
+    console.log(link.href); 
     link.style.display = 'block';
     
 }
