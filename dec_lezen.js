@@ -294,31 +294,53 @@ function correcties_uitlezen() {
     
 function bericht_downloaden(tekst_bericht) {
     "use strict";
+
+        console.log("Zitten we op IE?")   
+
+    
     var textFile = null,
     
         makeTextFile = function (text) {
-            var data = new Blob([text], {type: 'text/plain'});
-
-    // If we are replacing a previously generated file we need to
-    // manually revoke the object URL to avoid memory leaks.
-            if (textFile !== null) {
-                window.URL.revokeObjectURL(textFile);
+            
+            
+            /*Blobfunctie beschikbaar?*/
+            if (!window.Blob) {
+            console.log("Blob niet beschikbaar");
+            return;
             }
-
-            textFile = window.URL.createObjectURL(data);
-
-            return textFile;
-        };
-
-
-    var create = document.getElementById('create'),
-        textbox = document.getElementById('textbox'),
-        link = document.getElementById('downloadlink');
-        
-    link.href = makeTextFile(tekst_bericht);
-    link.style.display = 'block';
     
-}
+            /*Anders nu blob maken*/
+            var blobObject = new Blob([text], {type: 'text/plain'});
+            
+            /*Als IE en versie groter dan 10, dan IE methode gebruiken om download te maken*/
+            
+            if (window.navigator.msSaveOrOpenBlob) {
+                console.log("IE versie 10 of hoger");
+                /*Opslaan met factuurnummer als bestandsnaam*/
+                window.navigator.msSaveOrOpenBlob(blobObject, huidige_waarde(["0116"]) + ".txt");
+            }
+            if(!window.navigator.msSaveOrOpenBlob) {
+                console.log("Andere browser dan IE")
+                
+                // If we are replacing a previously generated file we need to
+                // manually revoke the object URL to avoid memory leaks.
+            
+                if (textFile !== null) {
+                window.URL.revokeObjectURL(textFile);
+                }
+
+                textFile = window.URL.createObjectURL(blobObject);
+                
+                var link = document.getElementById('downloadlink');
+                
+                    link.href = textFile;
+                    link.download = huidige_waarde(["0116"]) + ".txt" 
+                    link.style.display = 'block';
+            }
+        }
+    makeTextFile(tekst_bericht);
+    
+    }
 
     
 
