@@ -1,8 +1,24 @@
 /*jslint plusplus: true*/
 
+
+/*UI setup*/
+
+
+$(document).ready(function(){
+    $("#credit").toggle();
+    $("#apply").toggle();
+    $("#export").toggle();
+    console.log("hide function fired")
+});
+
+
+
+
+
+
+
+
 var bericht_versie = {}; 
-
-
 
 /*huidige datum in het formaat dat gebruikt wordt in de berichten*/
 
