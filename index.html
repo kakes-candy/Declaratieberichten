@@ -127,18 +127,29 @@ overflow: hidden;
 div.divider {
 width: 45%;
 float:left;
+display: none; /*In eerste instantie verborgen*/
 }    
     
 div.clear {
 clear: both;
 }
-
-
     
 textarea.new_input {
 float:right;
 }
     
+input#apply{
+display: none;
+}
+
+input#credit {
+display: none;
+}    
+    
+input#export {
+display: none;
+}       
+
     
 </style>
 <body>
@@ -225,7 +236,9 @@ float:right;
 
 
 <div>
+   <h3 class="berichtkop">Lees het declaratiebericht in.</h3>
     <input id= "submit" type="button" type="submit" value="Lees in">
+    <input id= "choose" type="button" type="submit" value="Aanpassen">
     <input id= "apply" type="button" type="submit" value="Toepassen">
     <input id= "credit" type="button" type="submit" value="Crediteer">
     <input id= "export" type="button" type="submit" value="Exporteer">

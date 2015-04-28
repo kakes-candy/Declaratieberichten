@@ -4,20 +4,6 @@
 /*UI setup*/
 
 
-$(document).ready(function(){
-    $("#credit").toggle();
-    $("#apply").toggle();
-    $("#export").toggle();
-    console.log("hide function fired")
-});
-
-
-
-
-
-
-
-
 var bericht_versie = {}; 
 
 /*huidige datum in het formaat dat gebruikt wordt in de berichten*/
@@ -218,7 +204,10 @@ function inlezen_bericht() {
     
     /*Functie aanroepen om op basis van de berichtstandaard het bericht verder te verwerken*/
     inlezen_standaard(bericht_versie, bericht_gelezen);
-
+    
+    /*knop inlezen verbergen en gebruiker vragen wat ie wil*/
+    $("submit").hide();
+    
 }
    
 
