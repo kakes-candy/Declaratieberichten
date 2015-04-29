@@ -727,7 +727,7 @@ function debet_credit() {
     
     if (bericht_versie.code_EI_bericht + "_" + bericht_versie.versie_EI_standaard === "181_02") {        
     /*dit zijn de velden die aangepast moeten worden*/
-    var targets = ["0417", "0624", "0626", "0629", "9908"];
+    var targets = ["0417", "0624", "0626", "0629", "9909"];
     change_inputs(targets, "C");
     }
         
@@ -828,6 +828,11 @@ function crediteren(){
     debet_credit();
     aanpassen_referentie_voorgaande();
     aanpassen_referentie_dit("credit");
+    
+    $("#export").show();
+    $("#choose").hide();
+    $("#credit").hide();
+    $("#berichtkop").text("Exporteer bericht");
 
 }
 
@@ -838,7 +843,11 @@ function bericht_aanpassen(){
     $("#export").show();
     $("#choose").hide();
     $("#credit").hide();
-    $("#berichtkop").text("Pas het bericht aan")
+    $("#berichtkop").text("Pas het bericht aan");
+    var subkop = $("#berichtsubkop")
+    
+    subkop.show();
+    subkop.text("Gebruik een van de standaardacties of gebruik de velden in de recordlijst onder aan de pagina. Klik op toepassen voordat je het bericht exporteert (ook als je de standaaractie niet gebruikt) want daarmee wordt het factuurnummer en de dagtekening van de declaratie aangepast.");
 }
 
 
