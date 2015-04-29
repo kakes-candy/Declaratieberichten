@@ -150,6 +150,10 @@ input#export {
 display: none;
 }       
 
+input#choose {
+display: none;
+}     
+    
     
 </style>
 <body>
@@ -165,70 +169,72 @@ display: none;
 
 
 <div class="wrapper" >
+    
+    <h3 id="berichtkop">Lees het declaratiebericht in.</h3>
 
-<div class="divider">
-   
-    <div class="wrapper">
-        <span>Nieuwe Startdatum</span>
-        <textarea name="startdatum" id="input_startdatum" cols="12" rows="1" class=new_input></textarea>
-    </div>
-    
-    <div class="wrapper">
-    <span>Nieuwe Einddatum</span>
-    <textarea name="einddatum" id="input_einddatum" cols="12" rows="1" class=new_input></textarea>
-    </div>
-    
-    <div class="wrapper">
-    <span>Nieuwe Prestatiecode</span>
-    <textarea name="prestatiecode" id="input_prestatiecode" cols="12" rows="1" class=new_input></textarea>   
-    </div>
-    
-    <div class="wrapper">
-    <span>Nieuwe Declaratiecode</span>
-    <textarea name="declaratiecode" id="input_declaratiecode" cols="12" rows="1" class=new_input></textarea>    
-    </div>
+    <div class="divider">
 
-    <div class="wrapper">
-    <span>Nieuwe totale tijd</span>
-    <textarea name="totale_tijd" id="input_totale_tijd" cols="12" rows="1" class=new_input></textarea>    
-    </div>
-      
-    <div class="wrapper">
-    <span>Nieuwe directe tijd</span>
-    <textarea name="directe_tijd" id="input_directe_tijd" cols="12" rows="1" class=new_input></textarea>   
-    </div>
-</div>   
-   
-<div class="divider">   
-   <div class="wrapper">
-    <span>Nieuwe indirecte tijd</span>
-    <textarea name="indirecte_tijd" id="input_indirecte_tijd" cols="12" rows="1" class=new_input></textarea>    
-    </div>
-    
-    
-    
-    <div class="wrapper">
-    <span>Nieuw verrekenpercentage</span>
-    <textarea name="verrekenpercentage" id="input_verrekenpercentage" cols="12" rows="1" class=new_input></textarea>    
-    </div>
-    
-    
-    <div class="wrapper">
-    <span>Nieuw NZA tarief</span>
-    <textarea name="NZA_tarief" id="input_NZA_tarief" cols="12" rows="1" class=new_input></textarea>    
-    </div>
-    
-    
-    
-    <div class="wrapper">
-    <span>Nieuw declaratiebedrag</span>
-    <textarea name="declaratiebedrag" id="input_declaratiebedrag" cols="12" rows="1" class=new_input></textarea>    
-    </div>
-    
-    <div class="wrapper">
-    <span>Nieuw berekend bedrag</span>
-    <textarea name="berekend_bedrag" id="input_berekend_bedrag" cols="12" rows="1" class=new_input></textarea>    
-    </div>
+        <div class="wrapper">
+            <span>Nieuwe Startdatum</span>
+            <textarea name="startdatum" id="input_startdatum" cols="12" rows="1" class=new_input></textarea>
+        </div>
+
+        <div class="wrapper">
+            <span>Nieuwe Einddatum</span>
+            <textarea name="einddatum" id="input_einddatum" cols="12" rows="1" class=new_input></textarea>
+        </div>
+
+        <div class="wrapper">
+            <span>Nieuwe Prestatiecode</span>
+            <textarea name="prestatiecode" id="input_prestatiecode" cols="12" rows="1" class=new_input></textarea>   
+        </div>
+
+        <div class="wrapper">
+        <span>Nieuwe Declaratiecode</span>
+        <textarea name="declaratiecode" id="input_declaratiecode" cols="12" rows="1" class=new_input></textarea>    
+        </div>
+
+        <div class="wrapper">
+        <span>Nieuwe totale tijd</span>
+        <textarea name="totale_tijd" id="input_totale_tijd" cols="12" rows="1" class=new_input></textarea>    
+        </div>
+
+        <div class="wrapper">
+        <span>Nieuwe directe tijd</span>
+        <textarea name="directe_tijd" id="input_directe_tijd" cols="12" rows="1" class=new_input></textarea>   
+        </div>
+    </div>   
+
+    <div class="divider">   
+       <div class="wrapper">
+        <span>Nieuwe indirecte tijd</span>
+        <textarea name="indirecte_tijd" id="input_indirecte_tijd" cols="12" rows="1" class=new_input></textarea>    
+        </div>
+
+
+
+        <div class="wrapper">
+        <span>Nieuw verrekenpercentage</span>
+        <textarea name="verrekenpercentage" id="input_verrekenpercentage" cols="12" rows="1" class=new_input></textarea>    
+        </div>
+
+
+        <div class="wrapper">
+        <span>Nieuw NZA tarief</span>
+        <textarea name="NZA_tarief" id="input_NZA_tarief" cols="12" rows="1" class=new_input></textarea>    
+        </div>
+
+
+
+        <div class="wrapper">
+        <span>Nieuw declaratiebedrag</span>
+        <textarea name="declaratiebedrag" id="input_declaratiebedrag" cols="12" rows="1" class=new_input></textarea>    
+        </div>
+
+        <div class="wrapper">
+        <span>Nieuw berekend bedrag</span>
+        <textarea name="berekend_bedrag" id="input_berekend_bedrag" cols="12" rows="1" class=new_input></textarea>    
+        </div>
 </div>    
        
 <div class="clear"> </div>    
@@ -236,7 +242,6 @@ display: none;
 
 
 <div>
-   <h3 class="berichtkop">Lees het declaratiebericht in.</h3>
     <input id= "submit" type="button" type="submit" value="Lees in">
     <input id= "choose" type="button" type="submit" value="Aanpassen">
     <input id= "apply" type="button" type="submit" value="Toepassen">

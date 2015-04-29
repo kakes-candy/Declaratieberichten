@@ -206,7 +206,12 @@ function inlezen_bericht() {
     inlezen_standaard(bericht_versie, bericht_gelezen);
     
     /*knop inlezen verbergen en gebruiker vragen wat ie wil*/
-    $("submit").hide();
+    $("#submit").hide();
+    $("#choose").show();
+    $("#credit").show();
+    
+    $("#berichtkop").text("Wat wil je doen?");
+    
     
 }
    
@@ -827,6 +832,16 @@ function crediteren(){
 }
 
 
+function bericht_aanpassen(){
+    $(".divider").show();
+    $("#apply").show();
+    $("#export").show();
+    $("#choose").hide();
+    $("#credit").hide();
+    $("#berichtkop").text("Pas het bericht aan")
+}
+
+
 
 
 function toepassen_aanpassingen() {
@@ -872,8 +887,8 @@ var startdatum = document.getElementById("input_startdatum").value,
 
 
 
-
-d3.select("#apply").on("click", toepassen_aanpassingen);    
 d3.select("#submit").on("click", inlezen_bericht);
+d3.select("#choose").on("click", bericht_aanpassen);
+d3.select("#apply").on("click", toepassen_aanpassingen);    
 d3.select("#export").on("click", correcties_uitlezen);
 d3.select("#credit").on("click", crediteren);
