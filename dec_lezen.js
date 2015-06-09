@@ -327,7 +327,7 @@ function bericht_downloaden(tekst_bericht) {
             if (window.navigator.msSaveOrOpenBlob) {
                 console.log("IE versie 10 of hoger");
                 /*Opslaan met factuurnummer als bestandsnaam*/
-                window.navigator.msSaveOrOpenBlob(blobObject, huidige_waarde(["0116"]) + ".txt");
+                window.navigator.msSaveOrOpenBlob(blobObject, huidige_aanpassing(["0116"]) + ".txt");
             }
             if(!window.navigator.msSaveOrOpenBlob) {
                 console.log("Andere browser dan IE")
@@ -344,7 +344,7 @@ function bericht_downloaden(tekst_bericht) {
                 var link = document.getElementById('downloadlink');
                 
                     link.href = textFile;
-                    link.download = huidige_waarde(["0116"]) + ".txt" 
+                    link.download = huidige_aanpassing(["0116"]) + ".txt" 
                     link.style.display = 'block';
             }
         }
@@ -408,6 +408,22 @@ function huidige_waarde(targets) {
     
     return selectie.html().trim(); 
 }
+
+
+
+function huidige_aanpassing(targets) {
+    "use strict";
+    
+    /*Selectie van inputvelden op basis van lijst (targets)*/
+    var selectie = d3.selectAll(".items")
+                     .filter(function (d) {return targets.indexOf(d.values[0].Volgnummer) !== -1})
+                     .selectAll(".item_input");
+    
+    console.log(selectie);
+    
+    return selectie.attr("value"); 
+}
+
 
 
 
@@ -848,6 +864,7 @@ function bericht_aanpassen(){
     
     subkop.show();
     subkop.text("Gebruik een van de standaardacties of gebruik de velden in de recordlijst onder aan de pagina. Klik op toepassen voordat je het bericht exporteert (ook als je de standaaractie niet gebruikt) want daarmee wordt het factuurnummer en de dagtekening van de declaratie aangepast.");
+    aanpassen_factuurnummer("debet");
 }
 
 
@@ -879,7 +896,7 @@ var startdatum = document.getElementById("input_startdatum").value,
     
 
     aanpassen_dagtekening();
-    aanpassen_factuurnummer("debet");
+/*    aanpassen_factuurnummer("debet");*/
     aanpassen_referentie_dit("debet");
     if(startdatum.length > 0) aanpassen_startdatum(startdatum); 
     if(einddatum.length > 0) aanpassen_einddatum(einddatum);  
