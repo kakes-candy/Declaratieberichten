@@ -46,13 +46,14 @@ function createPaddedString(input, totalLength, paddingCharachter) {
     if (input === undefined) {input = ""; }
     var inputLength = input.length;
     
-    if (input < totalLength) {return input; }
+    /*if (input < totalLength) {return input; }*/
     
     if(paddingCharachter === "space") {return (input + padding_space).substring(0, totalLength);}
     if(paddingCharachter === "zero") {
         
         var output = (padding_zero + input).slice(-totalLength);
         
+        console.log("totaLength was: ", totalLength);
         console.log("input was: ", input);
         console.log("output was: ", output)
         
@@ -257,21 +258,24 @@ function bericht_maken(bron) {
             
             var item_record = bron_record[j],
                 item_stringLength = item_record.Lengte, 
-                item_Type =  item_record.Type;
+                item_Type =  item_record.Type, 
+                item_ID = item_record.Volgnummer;
             
-            console.log("record in loop", item_Type);
+            console.log("record in loop", item_ID);
             
             /*Check of er een correctiewaarde is toegevoegd,
             zo niet, dan originele waarde gebruiken*/
-            
             var itemString = null;
             if (item_record.Correctie.length === 0) {itemString = item_record.Vulling; }
-            if (item_record.Correctie.length > 0) {itemString = item_record.Correctie; }
             
+            /*Als er wel een correctiewaarde is toegevoegd, dan deze aanvullen tot de gewenste lengte
+            en gebruiken.*/
+            if (item_record.Correctie.length > 0) {
+                itemString = item_record.Correctie; 
             /*Afhankelijk van het type item (tekst of numeriek) het item vullen met nullen links, of spaties rechts*/
-           
             if (item_Type === "N") {itemString  = createPaddedString(itemString, item_stringLength, "zero");}
             if (item_Type === "AN") {itemString  = createPaddedString(itemString, item_stringLength, "space");}
+            }
             
             bericht_record.push(itemString);
         
