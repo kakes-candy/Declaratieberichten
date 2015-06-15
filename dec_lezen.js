@@ -37,9 +37,10 @@ function capitalizeFirst(string) {
 }
     
 
-var padding = new Array(256).join(' ');
-    
-function createPaddedString(input, totalLength) {
+var padding_space = new Array(256).join(' '),
+    padding_zero = new Array(256).join('0');
+
+function createPaddedString(input, totalLength, paddingCharachter) {
     "use strict";
     
     if (input === undefined) {input = ""; }
@@ -47,7 +48,23 @@ function createPaddedString(input, totalLength) {
     
     if (input < totalLength) {return input; }
     
-    return (input + padding).substring(0, totalLength);
+    if(paddingCharachter === "space") {return (input + padding_space).substring(0, totalLength);}
+    if(paddingCharachter === "zero") {
+        
+        var output = (padding_zero + input).slice(-totalLength);
+        
+        console.log("input was: ", input);
+        console.log("output was: ", output)
+        
+        return output;
+        
+        
+        /*
+        var paddedString = padding_zero + input, 
+            finalString = paddedString.substring(paddedString.length - totalLength);
+        return finalString;*/
+        
+        }
 }
     
     
@@ -232,13 +249,17 @@ function bericht_maken(bron) {
             n_bron = bron_record.length,
             regeleinde = "\r\n";
         
-        console.log("record in eerste loop", bron_record);
-        console.log("lengte record", n_bron);
+/*        console.log("record in eerste loop", bron_record);
+        console.log("lengte record", n_bron);*/
         
         for (j = 0; j < n_bron; j++) {
           
+            
             var item_record = bron_record[j],
-                item_stringLength = item_record.Lengte;
+                item_stringLength = item_record.Lengte, 
+                item_Type =  item_record.Type;
+            
+            console.log("record in loop", item_Type);
             
             /*Check of er een correctiewaarde is toegevoegd,
             zo niet, dan originele waarde gebruiken*/
@@ -247,7 +268,10 @@ function bericht_maken(bron) {
             if (item_record.Correctie.length === 0) {itemString = item_record.Vulling; }
             if (item_record.Correctie.length > 0) {itemString = item_record.Correctie; }
             
-            itemString = createPaddedString(itemString, item_stringLength);
+            /*Afhankelijk van het type item (tekst of numeriek) het item vullen met nullen links, of spaties rechts*/
+           
+            if (item_Type === "N") {itemString  = createPaddedString(itemString, item_stringLength, "zero");}
+            if (item_Type === "AN") {itemString  = createPaddedString(itemString, item_stringLength, "space");}
             
             bericht_record.push(itemString);
         
@@ -294,7 +318,7 @@ function correcties_uitlezen() {
     }
 
 
-    
+    console.log("array voor bericht", uitgelezen);
     bericht_maken(uitgelezen);
     
     
