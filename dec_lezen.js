@@ -4,7 +4,8 @@
 /*UI setup*/
 
 
-var bericht_versie = {}; 
+var bericht_versie = {}, 
+    gemengd_bericht = true; 
 
 /*huidige datum in het formaat dat gebruikt wordt in de berichten*/
 
@@ -78,7 +79,8 @@ function inlezen_standaard(versie, bericht) {
     var bericht_verwerkt = [],
         bestand = versie.code_EI_bericht + "_" + versie.versie_EI_standaard + ".txt",
         i = 0,
-        j = 0;
+        j = 0, 
+        prestatiecodelijsten = [];
     
 
     d3.tsv(bestand, function (error, standaard) {
@@ -122,21 +124,30 @@ function inlezen_standaard(versie, bericht) {
 
                 var eind = +codelijst.values[j].values[0].Eindpositie,
                     lengte = +codelijst.values[j].values[0].Lengte,
+                    veldnaam = codelijst.values[j].values[0]['Naam gegevenselement'],
                     waarde_veld = record.bericht.substring((eind - lengte), eind),
                     berichtlijst = codelijst;
                 
+                
                 berichtlijst.values[j].waarde_origineel = waarde_veld;
 /*                berichtlijst.values[j].volgorde = waarde_veld + "_" + i + "_" + j;*/
+    
+                
+               /* De standaard laat het mengen van verschillende financieringsstromen toe. Deze worden dan gescheiden
+                door per prestatie aan te geven van welke prestatiecodelijst deze komt. Wanneer het bericht niet gemengd
+                is, kan de interface worden toegespitst op een enkele soort prestatie.*/
+                 if(veldnaam === "AANDUIDING PRESTATIECODELIJST") {prestatiecodelijsten.push(waarde_veld)};
 
             }
 
             bericht_verwerkt.push(berichtlijst);
 
         }
-            
-            
-            
-            
+        
+        
+        /*Als de lijst van unieke gebruikte prestatiecodelijsten 1 lang is, dan is het geen gemend bericht*/ 
+        if($.unique(prestatiecodelijsten).length === 1) {gemengd_bericht = false;}
+        
         /*Dan de verwerkte data gebruiken om een lijst te maken van alle waarden*/
         var lijst_records = d3.select("#veldlijst")
                                 .selectAll("li")
