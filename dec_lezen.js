@@ -924,6 +924,7 @@ function bericht_aanpassen(){
         $("#wrapper_totale_tijd").hide();
         $("#wrapper_directe_tijd").hide();
         $("#wrapper_indirecte_tijd").hide();
+        $("#wrapper_verrekenpercentage").hide();
     
     }
     
