@@ -5,7 +5,8 @@
 
 
 var bericht_versie = {}, 
-    gemengd_bericht = true; 
+    gemengd_bericht = true, 
+    bggz_bericht = false; 
 
 /*huidige datum in het formaat dat gebruikt wordt in de berichten*/
 
@@ -146,7 +147,15 @@ function inlezen_standaard(versie, bericht) {
         
         
         /*Als de lijst van unieke gebruikte prestatiecodelijsten 1 lang is, dan is het geen gemend bericht*/ 
-        if($.unique(prestatiecodelijsten).length === 1) {gemengd_bericht = false;}
+        if($.unique(prestatiecodelijsten).length === 1) {
+            gemengd_bericht = false;
+            if($.unique(prestatiecodelijsten)[0] === "063") {
+                bggz_bericht = true;
+            }
+        }
+        
+        
+        
         
         /*Dan de verwerkte data gebruiken om een lijst te maken van alle waarden*/
         var lijst_records = d3.select("#veldlijst")
@@ -904,6 +913,21 @@ function bericht_aanpassen(){
     subkop.show();
     subkop.text("Gebruik een van de standaardacties of gebruik de velden in de recordlijst onder aan de pagina. Klik op toepassen voordat je het bericht exporteert (ook als je de standaaractie niet gebruikt) want daarmee wordt het factuurnummer en de dagtekening van de declaratie aangepast.");
     aanpassen_factuurnummer("debet");
+    
+    /*als het een basisGGZ bericht is kunnen een aantal knoppen worden verborgen*/
+    if(bggz_bericht) {
+        $("#wrapper_prestatiecode").hide();
+        $("#wrapper_verrekenpercentage").hide();
+    }
+    
+    if(bericht_versie.code_EI_bericht + "_" + bericht_versie.versie_EI_standaard === "195_01") {
+        $("#wrapper_totale_tijd").hide();
+        $("#wrapper_directe_tijd").hide();
+        $("#wrapper_indirecte_tijd").hide();
+    
+    }
+    
+    
 }
 
 
