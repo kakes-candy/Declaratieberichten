@@ -4,7 +4,9 @@
 /*UI setup*/
 
 
-var bericht_versie = {}; 
+var bericht_versie = {}, 
+    gemengd_bericht = true, 
+    bggz_bericht = false; 
 
 /*huidige datum in het formaat dat gebruikt wordt in de berichten*/
 
@@ -37,17 +39,35 @@ function capitalizeFirst(string) {
 }
     
 
-var padding = new Array(256).join(' ');
-    
-function createPaddedString(input, totalLength) {
+var padding_space = new Array(256).join(' '),
+    padding_zero = new Array(256).join('0');
+
+function createPaddedString(input, totalLength, paddingCharachter) {
     "use strict";
     
     if (input === undefined) {input = ""; }
     var inputLength = input.length;
     
-    if (input < totalLength) {return input; }
+    /*if (input < totalLength) {return input; }*/
     
-    return (input + padding).substring(0, totalLength);
+    if(paddingCharachter === "space") {return (input + padding_space).substring(0, totalLength);}
+    if(paddingCharachter === "zero") {
+        
+        var output = (padding_zero + input).slice(-totalLength);
+        
+        console.log("totaLength was: ", totalLength);
+        console.log("input was: ", input);
+        console.log("output was: ", output)
+        
+        return output;
+        
+        
+        /*
+        var paddedString = padding_zero + input, 
+            finalString = paddedString.substring(paddedString.length - totalLength);
+        return finalString;*/
+        
+        }
 }
     
     
@@ -60,7 +80,8 @@ function inlezen_standaard(versie, bericht) {
     var bericht_verwerkt = [],
         bestand = versie.code_EI_bericht + "_" + versie.versie_EI_standaard + ".txt",
         i = 0,
-        j = 0;
+        j = 0, 
+        prestatiecodelijsten = [];
     
 
     d3.tsv(bestand, function (error, standaard) {
@@ -104,21 +125,38 @@ function inlezen_standaard(versie, bericht) {
 
                 var eind = +codelijst.values[j].values[0].Eindpositie,
                     lengte = +codelijst.values[j].values[0].Lengte,
+                    veldnaam = codelijst.values[j].values[0]['Naam gegevenselement'],
                     waarde_veld = record.bericht.substring((eind - lengte), eind),
                     berichtlijst = codelijst;
                 
+                
                 berichtlijst.values[j].waarde_origineel = waarde_veld;
 /*                berichtlijst.values[j].volgorde = waarde_veld + "_" + i + "_" + j;*/
+    
+                
+               /* De standaard laat het mengen van verschillende financieringsstromen toe. Deze worden dan gescheiden
+                door per prestatie aan te geven van welke prestatiecodelijst deze komt. Wanneer het bericht niet gemengd
+                is, kan de interface worden toegespitst op een enkele soort prestatie.*/
+                 if(veldnaam === "AANDUIDING PRESTATIECODELIJST") {prestatiecodelijsten.push(waarde_veld)};
 
             }
 
             bericht_verwerkt.push(berichtlijst);
 
         }
-            
-            
-            
-            
+        
+        
+        /*Als de lijst van unieke gebruikte prestatiecodelijsten 1 lang is, dan is het geen gemend bericht*/ 
+        if($.unique(prestatiecodelijsten).length === 1) {
+            gemengd_bericht = false;
+            if($.unique(prestatiecodelijsten)[0] === "063") {
+                bggz_bericht = true;
+            }
+        }
+        
+        
+        
+        
         /*Dan de verwerkte data gebruiken om een lijst te maken van alle waarden*/
         var lijst_records = d3.select("#veldlijst")
                                 .selectAll("li")
@@ -232,22 +270,32 @@ function bericht_maken(bron) {
             n_bron = bron_record.length,
             regeleinde = "\r\n";
         
-        console.log("record in eerste loop", bron_record);
-        console.log("lengte record", n_bron);
+/*        console.log("record in eerste loop", bron_record);
+        console.log("lengte record", n_bron);*/
         
         for (j = 0; j < n_bron; j++) {
           
+            
             var item_record = bron_record[j],
-                item_stringLength = item_record.Lengte;
+                item_stringLength = item_record.Lengte, 
+                item_Type =  item_record.Type, 
+                item_ID = item_record.Volgnummer;
+            
+            console.log("record in loop", item_ID);
             
             /*Check of er een correctiewaarde is toegevoegd,
             zo niet, dan originele waarde gebruiken*/
-            
             var itemString = null;
             if (item_record.Correctie.length === 0) {itemString = item_record.Vulling; }
-            if (item_record.Correctie.length > 0) {itemString = item_record.Correctie; }
             
-            itemString = createPaddedString(itemString, item_stringLength);
+            /*Als er wel een correctiewaarde is toegevoegd, dan deze aanvullen tot de gewenste lengte
+            en gebruiken.*/
+            if (item_record.Correctie.length > 0) {
+                itemString = item_record.Correctie; 
+            /*Afhankelijk van het type item (tekst of numeriek) het item vullen met nullen links, of spaties rechts*/
+            if (item_Type === "N") {itemString  = createPaddedString(itemString, item_stringLength, "zero");}
+            if (item_Type === "AN") {itemString  = createPaddedString(itemString, item_stringLength, "space");}
+            }
             
             bericht_record.push(itemString);
         
@@ -294,7 +342,7 @@ function correcties_uitlezen() {
     }
 
 
-    
+    console.log("array voor bericht", uitgelezen);
     bericht_maken(uitgelezen);
     
     
@@ -327,7 +375,7 @@ function bericht_downloaden(tekst_bericht) {
             if (window.navigator.msSaveOrOpenBlob) {
                 console.log("IE versie 10 of hoger");
                 /*Opslaan met factuurnummer als bestandsnaam*/
-                window.navigator.msSaveOrOpenBlob(blobObject, huidige_waarde(["0116"]) + ".txt");
+                window.navigator.msSaveOrOpenBlob(blobObject, huidige_aanpassing(["0116"]) + ".txt");
             }
             if(!window.navigator.msSaveOrOpenBlob) {
                 console.log("Andere browser dan IE")
@@ -344,7 +392,7 @@ function bericht_downloaden(tekst_bericht) {
                 var link = document.getElementById('downloadlink');
                 
                     link.href = textFile;
-                    link.download = huidige_waarde(["0116"]) + ".txt" 
+                    link.download = huidige_aanpassing(["0116"]) + ".txt" 
                     link.style.display = 'block';
             }
         }
@@ -408,6 +456,22 @@ function huidige_waarde(targets) {
     
     return selectie.html().trim(); 
 }
+
+
+
+function huidige_aanpassing(targets) {
+    "use strict";
+    
+    /*Selectie van inputvelden op basis van lijst (targets)*/
+    var selectie = d3.selectAll(".items")
+                     .filter(function (d) {return targets.indexOf(d.values[0].Volgnummer) !== -1})
+                     .selectAll(".item_input");
+    
+    console.log(selectie);
+    
+    return selectie.attr("value"); 
+}
+
 
 
 
@@ -848,6 +912,23 @@ function bericht_aanpassen(){
     
     subkop.show();
     subkop.text("Gebruik een van de standaardacties of gebruik de velden in de recordlijst onder aan de pagina. Klik op toepassen voordat je het bericht exporteert (ook als je de standaaractie niet gebruikt) want daarmee wordt het factuurnummer en de dagtekening van de declaratie aangepast.");
+    aanpassen_factuurnummer("debet");
+    
+    /*als het een basisGGZ bericht is kunnen een aantal knoppen worden verborgen*/
+    if(bggz_bericht) {
+        $("#wrapper_prestatiecode").hide();
+        $("#wrapper_verrekenpercentage").hide();
+    }
+    
+    if(bericht_versie.code_EI_bericht + "_" + bericht_versie.versie_EI_standaard === "195_01") {
+        $("#wrapper_totale_tijd").hide();
+        $("#wrapper_directe_tijd").hide();
+        $("#wrapper_indirecte_tijd").hide();
+        $("#wrapper_verrekenpercentage").hide();
+    
+    }
+    
+    
 }
 
 
@@ -879,7 +960,7 @@ var startdatum = document.getElementById("input_startdatum").value,
     
 
     aanpassen_dagtekening();
-    aanpassen_factuurnummer("debet");
+/*    aanpassen_factuurnummer("debet");*/
     aanpassen_referentie_dit("debet");
     if(startdatum.length > 0) aanpassen_startdatum(startdatum); 
     if(einddatum.length > 0) aanpassen_einddatum(einddatum);  
