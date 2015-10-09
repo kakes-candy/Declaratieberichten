@@ -23,7 +23,7 @@ function todaysDate(){
         mm='0'+mm
     } 
 
-    today = yyyy + mm + dd 
+    today = String(yyyy) + String(mm) + String(dd) 
 
     return today; 
     
